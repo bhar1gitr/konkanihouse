@@ -4,6 +4,7 @@ export const SHOP = {
   tagline: 'देवगडचा राजा',
   whatsapp: '919555726438', // ← your WhatsApp number with country code, no + or spaces
   phone: '+91 95557 26438',
+  phone2: '+91 80822 43423', // second contact number
   email: 'housekonkani@gmail.com',
   address: 'Devgad, Sindhudurg, Maharashtra',
   // Process video: a YouTube link, OR a file path like '/videos/process.mp4'
