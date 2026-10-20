@@ -2,9 +2,9 @@
 export const SHOP = {
   name: 'Konkan Hapus',
   tagline: 'देवगडचा राजा',
-  whatsapp: '919999999999', // ← your WhatsApp number with country code, no + or spaces
-  phone: '+91 99999 99999',
-  email: 'orders@konkanhapus.in',
+  whatsapp: '919555726438', // ← your WhatsApp number with country code, no + or spaces
+  phone: '+91 95557 26438',
+  email: 'housekonkani@gmail.com',
   address: 'Devgad, Sindhudurg, Maharashtra',
   // Process video: a YouTube link, OR a file path like '/videos/process.mp4'
   // (put the file in public/videos/). Leave '' to show "coming soon".
