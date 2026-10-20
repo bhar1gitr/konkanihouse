@@ -1,54 +1,23 @@
-import { useCallback, useState } from 'react';
+import { useEffect } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Products from './components/Products';
-import Cart from './components/Cart';
-import { Story, Process, Reviews, Faq, Footer } from './components/Sections';
-import { useCart, useReveal } from './hooks';
-import { PRODUCTS } from './data';
-
-const STRIP = ['100% Natural', 'GI Tagged Devgad', 'No Carbide', 'Hand-Picked', 'Farm Fresh', 'Pan-India Delivery'];
+import Footer from './components/Footer';
+import Home from './pages/Home';
+import Shop from './pages/Shop';
+import PreBook from './pages/PreBook';
+import Gallery from './pages/Gallery';
+import About from './pages/About';
+import NotFound from './pages/NotFound';
+import { useReveal } from './hooks';
 
 export default function App() {
-  const { items, add, clear, count } = useCart();
-  const [open, setOpen] = useState(false);
-  const [bump, setBump] = useState(false);
-  const [toast, setToast] = useState(null);
-  const [flyers, setFlyers] = useState([]);
-
+  const { pathname } = useLocation();
   useReveal();
 
-  const onAdd = useCallback(
-    (id, n, e) => {
-      add(id, n);
-      if (n > 0) {
-        setBump(true);
-        setTimeout(() => setBump(false), 450);
-        const p = PRODUCTS.find((x) => x.id === id);
-        setToast(`${p.name} (${p.pack}) added 🥭`);
-        clearTimeout(window.__toastT);
-        window.__toastT = setTimeout(() => setToast(null), 2000);
-
-        // Fly a mango emoji from the button to the cart icon
-        if (e?.currentTarget) {
-          const from = e.currentTarget.getBoundingClientRect();
-          const to = document.querySelector('.cart-btn')?.getBoundingClientRect();
-          if (to) {
-            const f = {
-              key: Date.now() + Math.random(),
-              x: from.left + from.width / 2,
-              y: from.top + from.height / 2,
-              dx: to.left + to.width / 2 - (from.left + from.width / 2),
-              dy: to.top + to.height / 2 - (from.top + from.height / 2),
-            };
-            setFlyers((fs) => [...fs, f]);
-            setTimeout(() => setFlyers((fs) => fs.filter((x) => x.key !== f.key)), 800);
-          }
-        }
-      }
-    },
-    [add]
-  );
+  // Scroll to top whenever the page changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [pathname]);
 
   return (
     <>
@@ -62,49 +31,20 @@ export default function App() {
         ))}
       </div>
 
-      <Navbar count={count} onCart={() => setOpen(true)} bump={bump} />
+      <Navbar />
 
-      <main>
-        <Hero />
-
-        <div className="strip" aria-hidden="true">
-          <div className="strip__track">
-            {[...STRIP, ...STRIP, ...STRIP].map((s, i) => (
-              <span key={i}>🥭 {s}</span>
-            ))}
-          </div>
-        </div>
-
-        <Products cart={items} onAdd={onAdd} />
-        <Story />
-        <Process />
-        <Reviews />
-        <Faq />
+      <main key={pathname} className="page">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/shop" element={<Shop />} />
+          <Route path="/prebook" element={<PreBook />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/about" element={<About />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </main>
 
       <Footer />
-
-      <Cart open={open} onClose={() => setOpen(false)} cart={items} onAdd={onAdd} onClear={clear} />
-
-      {/* Mobile sticky cart bar */}
-      {count > 0 && !open && (
-        <button className="mobile-bar" onClick={() => setOpen(true)}>
-          <span>🥭 {count} item{count > 1 ? 's' : ''} in basket</span>
-          <b>View →</b>
-        </button>
-      )}
-
-      {flyers.map((f) => (
-        <span
-          key={f.key}
-          className="flyer"
-          style={{ left: f.x, top: f.y, '--dx': `${f.dx}px`, '--dy': `${f.dy}px` }}
-        >
-          🥭
-        </span>
-      ))}
-
-      <div className={`toast glass ${toast ? 'is-show' : ''}`} role="status">{toast}</div>
     </>
   );
 }

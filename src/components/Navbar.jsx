@@ -1,17 +1,21 @@
 import { useEffect, useState } from 'react';
-import { SHOP } from '../data';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+import { SHOP, SEASON } from '../data';
 
 const LINKS = [
-  ['Shop', '#shop'],
-  ['Our Story', '#story'],
-  ['Process', '#process'],
-  ['Reviews', '#reviews'],
-  ['FAQ', '#faq'],
+  ['Home', '/'],
+  ['Shop', '/shop'],
+  ['Pre-Book 2027', '/prebook'],
+  ['Gallery', '/gallery'],
+  ['About Us', '/about'],
 ];
 
-export default function Navbar({ count, onCart, bump }) {
+export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const { pathname } = useLocation();
+
+  useEffect(() => setOpen(false), [pathname]);
 
   useEffect(() => {
     const f = () => setScrolled(window.scrollY > 30);
@@ -23,35 +27,31 @@ export default function Navbar({ count, onCart, bump }) {
   return (
     <header className={`nav ${scrolled ? 'nav--scrolled' : ''}`}>
       <div className="nav__inner glass">
-        <a href="#top" className="logo" onClick={() => setOpen(false)}>
+        <Link to="/" className="logo">
           <span className="logo__mark">🥭</span>
           <span>
             <strong>{SHOP.name}</strong>
             <small className="marathi">{SHOP.tagline}</small>
           </span>
-        </a>
+        </Link>
 
         <nav className={`nav__links ${open ? 'is-open' : ''}`}>
-          {LINKS.map(([l, h], i) => (
-            <a key={h} href={h} style={{ '--i': i }} onClick={() => setOpen(false)}>
-              {l}
-            </a>
+          {LINKS.map(([label, to], i) => (
+            <NavLink key={to} to={to} end={to === '/'} style={{ '--i': i }}>
+              {label}
+            </NavLink>
           ))}
         </nav>
 
         <div className="nav__actions">
-          <button className={`cart-btn ${bump ? 'bump' : ''}`} onClick={onCart} aria-label="Open cart">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-              <path d="M3 6h18" />
-              <path d="M16 10a4 4 0 0 1-8 0" />
-            </svg>
-            {count > 0 && <span className="cart-btn__count">{count}</span>}
-          </button>
+          <Link to="/prebook" className="btn btn--primary btn--sm nav__cta">
+            Pre-Book {SEASON.year}
+          </Link>
           <button
             className={`burger ${open ? 'is-open' : ''}`}
             onClick={() => setOpen((o) => !o)}
             aria-label="Menu"
+            aria-expanded={open}
           >
             <span /><span /><span />
           </button>

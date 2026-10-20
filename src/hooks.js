@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { SEASON } from './data';
 
-// Reveal elements when they scroll into view (adds .in-view)
+// Fade elements with class "reveal" in when they scroll into view
 export function useReveal() {
+  const { pathname } = useLocation();
   useEffect(() => {
-    const els = document.querySelectorAll('.reveal');
     const io = new IntersectionObserver(
       (entries) =>
         entries.forEach((e) => {
@@ -12,84 +14,30 @@ export function useReveal() {
             io.unobserve(e.target);
           }
         }),
-      { threshold: 0.15 }
+      { threshold: 0.12 }
     );
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  });
-}
-
-// Cart persisted in localStorage
-export function useCart() {
-  const [items, setItems] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem('hapus-cart')) || {};
-    } catch {
-      return {};
-    }
-  });
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('hapus-cart', JSON.stringify(items));
-    } catch {}
-  }, [items]);
-
-  const add = (id, n = 1) =>
-    setItems((c) => {
-      const q = (c[id] || 0) + n;
-      const next = { ...c };
-      if (q <= 0) delete next[id];
-      else next[id] = q;
-      return next;
-    });
-  const clear = () => setItems({});
-  const count = Object.values(items).reduce((a, b) => a + b, 0);
-
-  return { items, add, clear, count };
-}
-
-// Animated number counter
-export function useCountUp(target, duration = 1600) {
-  const [val, setVal] = useState(0);
-  const ref = useRef(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(([e]) => {
-      if (!e.isIntersecting) return;
+    const scan = () => document.querySelectorAll('.reveal:not(.in-view)').forEach((el) => io.observe(el));
+    scan();
+    const mo = new MutationObserver(scan);
+    mo.observe(document.body, { childList: true, subtree: true });
+    return () => {
       io.disconnect();
-      const start = performance.now();
-      const tick = (t) => {
-        const p = Math.min((t - start) / duration, 1);
-        setVal(Math.round(target * (1 - Math.pow(1 - p, 3))));
-        if (p < 1) requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-    });
-    io.observe(el);
-    return () => io.disconnect();
-  }, [target, duration]);
-  return [val, ref];
+      mo.disconnect();
+    };
+  }, [pathname]);
 }
 
-// Season countdown target (next March 25)
+// Countdown to the start of the season
 export function useCountdown() {
-  const getTarget = () => {
-    const now = new Date();
-    let y = now.getFullYear();
-    let t = new Date(y, 2, 25);
-    if (now > new Date(y, 5, 10)) t = new Date(y + 1, 2, 25);
-    return t;
-  };
-  const [left, setLeft] = useState(() => getTarget() - new Date());
+  const target = new Date(SEASON.start + 'T06:00:00+05:30').getTime();
+  const [now, setNow] = useState(Date.now());
   useEffect(() => {
-    const i = setInterval(() => setLeft(getTarget() - new Date()), 1000);
-    return () => clearInterval(i);
+    const t = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(t);
   }, []);
-  const s = Math.max(0, Math.floor(left / 1000));
+  const s = Math.max(0, Math.floor((target - now) / 1000));
   return {
-    inSeason: left <= 0,
+    live: s === 0,
     days: Math.floor(s / 86400),
     hours: Math.floor((s % 86400) / 3600),
     mins: Math.floor((s % 3600) / 60),
@@ -97,4 +45,5 @@ export function useCountdown() {
   };
 }
 
-export const inr = (n) => '₹' + n.toLocaleString('en-IN');
+export const inr = (n) => '₹' + Math.round(n).toLocaleString('en-IN');
+export const pad = (n) => String(n).padStart(2, '0');
