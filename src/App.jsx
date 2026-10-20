@@ -105,6 +105,12 @@ function ComingSoon() {
         >
           Or pre-book right now on WhatsApp →
         </a>
+
+        <div className="cs__calls fade-up" style={{ '--d': '0.9s' }}>
+          {[SHOP.phone, SHOP.phone2].filter(Boolean).map((n) => (
+            <a key={n} className="btn btn--glass" href={`tel:${n.replace(/\s/g, '')}`}>📞 {n}</a>
+          ))}
+        </div>
       </section>
 
       <section className="cs__photos" aria-label="Photos from our farm">
@@ -116,7 +122,9 @@ function ComingSoon() {
       </section>
 
       <footer className="cs__foot">
-        <a href={`tel:${SHOP.phone.replace(/\s/g, '')}`}>📞 {SHOP.phone}</a>
+        {[SHOP.phone, SHOP.phone2].filter(Boolean).map((n) => (
+          <a key={n} href={`tel:${n.replace(/\s/g, '')}`}>📞 {n}</a>
+        ))}
         <a href={`mailto:${SHOP.email}`}>✉️ {SHOP.email}</a>
         <span>📍 {SHOP.address}</span>
       </footer>
@@ -144,6 +152,8 @@ const CS_CSS = `
 .cs__form input::placeholder { color: var(--ink-soft); }
 .cs__alt { font-weight: 600; color: var(--leaf); border-bottom: 2px solid rgba(31,122,58,.3); padding-bottom: 2px; transition: border-color .3s; }
 .cs__alt:hover { border-color: var(--leaf); }
+.cs__calls { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.cs__calls .btn { padding: 12px 22px; font-size: 15px; }
 .cs__photos { display: flex; justify-content: center; gap: 14px; margin: 60px 0 40px; flex-wrap: wrap; }
 .cs__photos figure { width: 150px; aspect-ratio: 3 / 4; border-radius: 20px; overflow: hidden; border: 5px solid rgba(255,255,255,.7);
   box-shadow: var(--shadow); rotate: var(--r); transition: transform .5s var(--spring), rotate .5s var(--spring); }
