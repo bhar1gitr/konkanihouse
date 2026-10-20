@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="Konkan Hapus"><title>Konkan Hapus</title>
+<defs>
+  <linearGradient id="kh-bg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#2c9a4a"/><stop offset="1" stop-color="#15602c"/>
+  </linearGradient>
+  <radialGradient id="kh-mango" cx="38%" cy="32%" r="78%">
+    <stop offset="0" stop-color="#fff3a8"/><stop offset=".3" stop-color="#ffd23f"/>
+    <stop offset=".65" stop-color="#ffa41b"/><stop offset="1" stop-color="#e2611a"/>
+  </radialGradient>
+  <radialGradient id="kh-blush" cx="80%" cy="72%" r="45%">
+    <stop offset="0" stop-color="#e8412c" stop-opacity=".55"/><stop offset="1" stop-color="#e8412c" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="kh-leaf" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#8fe36d"/><stop offset="1" stop-color="#3fae4f"/>
+  </linearGradient>
+</defs>
+  <circle cx="100" cy="100" r="96" fill="url(#kh-bg)"/>
+  <circle cx="100" cy="100" r="89.28" fill="none" stroke="#ffe29a" stroke-width="2.304" opacity=".9"/>
+  <circle cx="100" cy="75.03999999999999" r="36.48" fill="#ffd56b" opacity=".22"/>
+  <path d="M40.480000000000004 149.92000000000002 q14.879999999999999 -4.8 29.759999999999998 0 t29.759999999999998 0 t29.759999999999998 0 t29.759999999999998 0" fill="none" stroke="#bff3ee" stroke-width="4.032" stroke-linecap="round" opacity="0.9"/><path d="M52.0 163.36 q12.0 -4.8 24.0 0 t24.0 0 t24.0 0 t24.0 0" fill="none" stroke="#bff3ee" stroke-width="4.032" stroke-linecap="round" opacity="0.6"/>
+  <g transform="translate(36.90880000000001 23.737600000000008) scale(0.5952)">
+    <path d="M104 32C148 36 170 82 162 126C154 168 116 188 84 178C56 170 48 148 56 130C62 116 58 106 50 96C40 78 52 38 104 32z" fill="url(#kh-mango)"/>
+    <path d="M104 32C148 36 170 82 162 126C154 168 116 188 84 178C56 170 48 148 56 130C62 116 58 106 50 96C40 78 52 38 104 32z" fill="url(#kh-blush)"/>
+    <ellipse cx="88" cy="70" rx="13" ry="22" fill="#fff" opacity=".5" transform="rotate(-30 88 70)"/>
+    <path d="M104 34c0-8 1-13 4-18" stroke="#5b3a1a" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <path d="M106 22c18-16 44-16 58-6-14 16-40 20-58 6z" fill="url(#kh-leaf)"/>
+  </g></svg>
